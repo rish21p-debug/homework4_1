@@ -1,1 +1,39 @@
+rom huggingface_hub import InferenceClient
 
+# 1. PASTE YOUR HUGGING FACE TOKEN HERE
+HF_TOKEN = "hf_your_actual_token_here"
+
+# 2. Initialize the client with a free model (Mistral-7B)
+client = InferenceClient(
+    model="mistralai/Mistral-7B-Instruct-v0.3",
+    token=HF_TOKEN
+)
+
+test_prompts = [
+    "Explain how a transformer model works in one sentence.",
+    "Write a short haiku about debugging code."
+]
+
+def experiment_with_llm(prompts):
+    for i, prompt in enumerate(prompts):
+        print(f"--- Running Experiment {i+1} ---")
+        try:
+            # 3. Call the Hugging Face API
+            response = client.chat_completion(
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=500,
+            )
+            
+            # 4. Inspect the output
+            print(f"Input: {prompt}")
+            print("-" * 20)
+            # This prints the full data structure for your assignment requirement
+            print(f"Full Response Metadata:\n{response}")
+            print("-" * 20)
+            print(f"AI Result: {response.choices[0].message.content}\n")
+            
+        except Exception as e:
+            print(f"Error: {e}")
+
+if __name__ == "__main__":
+    experiment_with_llm(test_prompts)
